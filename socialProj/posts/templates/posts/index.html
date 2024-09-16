@@ -29,7 +29,12 @@
                     <button type="submit">Add Post</button>
                 </form>
             </li>
+
         </ul>
     {% endif %}
+<form method="post" action="{% url 'logout' %}" >
+    {% csrf_token %}
+    <button type="submit">Logout</button>
+</form>
 </body>
 </html>
