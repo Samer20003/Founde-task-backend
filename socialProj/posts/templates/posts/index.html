@@ -6,16 +6,30 @@
 </head>
 <body>
     {% if posts %}
-        <uL>
+        <ul>
             {% for post in posts %}
                 <li>
                     <a href="/posts/{{post.id}}/">{{post.user_id.username}}</a>
                     <p>{{post.body}}</p>
-                    <p>created at {{post.pup_date}}</p>
-
+                    <p>Created at {{post.pup_date}}</p>
+                    <p><img src="{{post.img_url}}" alt="Post image"></p>
                 </li>
             {% endfor %}
-        </uL>
+            <li>
+                <form method="post" action="{% url 'posts:add_post' %}">
+                    {% csrf_token %}
+                    <label for="body">Write your post:</label>
+                    <div>
+                        <textarea id="body" name="body" placeholder="Your post here..." style="width:300px; height:100px"></textarea>
+                    </div>
+                    <label for="img_url">Image URL:</label>
+                    <div>
+                        <input type="text" id="img_url" name="img_url" placeholder="Image URL" style="width:300px;">
+                    </div>
+                    <button type="submit">Add Post</button>
+                </form>
+            </li>
+        </ul>
     {% endif %}
 </body>
 </html>
