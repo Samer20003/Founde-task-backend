@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {% if post %}
+        <ul>
+            <li>{{post.user_id}}</li>
+            <p>{{post.body}}</p>
+            <p>this niga created at {{post.pup_date}}</p>
+        </ul>
+    {% endif %}
+</body>
+</html>
