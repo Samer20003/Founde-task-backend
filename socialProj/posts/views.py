@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.views import generic
 from .models import Post
 from django.shortcuts import render ,redirect , get_object_or_404
+from .form import PostForm
 # Create your views here.
 class PostDetailView(generic.DetailView):
     template_name = "posts/detailes.html"
@@ -40,3 +41,14 @@ def delete_post (requset, pk):
         post.delete()
         return redirect('posts:list_view')
     return redirect(requset.META.get('HTTP_REFERER','posts:list_view')) # request.META is and dictionary in django that contain the HTTP headers sent with the requset , from it there is .get(HTTP_REFERER) and that will be the url of the previous page so we can redicrct the user in the same page and if it is empty for some reason the git methode will redirect to the path we put it
+
+def edit_post (requset, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if requset.method == 'POST':
+        form = PostForm(requset.POST, instance=post)
+        if form.is_valid():
+            form.save()
+            return redirect('posts:list_view')
+    else:
+        form = PostForm(instance=post)
+    return render(requset,'posts/edit_post.html',{'form':form})

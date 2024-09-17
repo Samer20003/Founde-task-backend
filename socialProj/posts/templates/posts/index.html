@@ -13,7 +13,13 @@
                     <p>{{post.body}}</p>
                     <p>Created at {{post.pup_date}}</p>
                     <p><img src="{{post.img_url}}" alt="Post image"></p>
-                    <button>Edit</button>
+
+                    <a href="{% url 'posts:edit_post' post.id%}">
+                        {% csrf_token %}
+                        <button>Edit</button>
+
+                    </a>
+
                     <form method="post" action="{% url 'posts:delete_post' post.id %}">
                         {% csrf_token %}
                         <button>delete</button>
