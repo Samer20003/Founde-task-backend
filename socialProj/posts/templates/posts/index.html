@@ -13,12 +13,13 @@
                     <p>{{post.body}}</p>
                     <p>Created at {{post.pup_date}}</p>
                     <p><img src="{{post.img_url}}" alt="Post image"></p>
-
                     <a href="{% url 'posts:edit_post' post.id%}">
                         {% csrf_token %}
                         <button>Edit</button>
-
                     </a>
+                   {% for comment in post.comments.all %}
+                        <p style="color:red">{{comment.body}} <span style="color : blue"> by {{comment.user.username}}</span></p>
+                    {% endfor %}
 
                     <form method="post" action="{% url 'posts:delete_post' post.id %}">
                         {% csrf_token %}
