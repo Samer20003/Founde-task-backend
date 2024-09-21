@@ -14,7 +14,7 @@ class PostListView(generic.ListView):
     template_name = "posts/index.html"
     context_object_name = "posts"
     def get_queryset(self):
-        return Post.objects.filter(user_id=self.request.user)
+        return Post.objects.filter(user_id=self.request.user) # ORM
 
 def add_post (request):
     if request.method == "POST":
