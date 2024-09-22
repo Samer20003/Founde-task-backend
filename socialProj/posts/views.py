@@ -1,9 +1,16 @@
 from datetime import timezone
+
+from django.core.serializers import serialize
 from django.utils import timezone
 from django.views import generic
 from .models import Post
 from django.shortcuts import render ,redirect , get_object_or_404
 from .form import PostForm
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+from .seriallizers import PostSerializer
+from rest_framework import generics
 # Create your views here.
 class PostDetailView(generic.DetailView):
     template_name = "posts/detailes.html"
@@ -52,3 +59,9 @@ def edit_post (requset, pk):
     else:
         form = PostForm(instance=post)
     return render(requset,'posts/edit_post.html',{'form':form})
+
+@api_view(['GET'])
+def post_list_view(request):
+    posts = Post.objects.all()
+    serializer = PostSerializer(posts, many=True) # the use of {many= True}: to serilaze a query set of objects which is a list of posts
+    return Response(serializer.data)

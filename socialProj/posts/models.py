@@ -4,7 +4,7 @@ from django.db import models
 class Post(models.Model):
     body = models.CharField(max_length=200)
     img_url = models.CharField(max_length=200)
-    user_id = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
     pup_date = models.DateTimeField()
 
 class Comment(models.Model):
