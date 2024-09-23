@@ -10,7 +10,7 @@ from rest_framework.decorators import api_view ,permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
-from .seriallizers import PostSerializer, CreatePostSerializer
+from .seriallizers import PostSerializer, CreatePostSerializer , UpdatePostSerializer
 from rest_framework import generics
 # Create your views here.
 class PostDetailView(generic.DetailView):
@@ -86,5 +86,12 @@ def add_post(request):
         print(item.errors)
         return Response(item.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
+@api_view (['PUT'])
+def edit_post(request, pk):
+    post = get_object_or_404(Post,pk=pk)
+    serializer = UpdatePostSerializer(post,data= request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({"msg":"post update sucssfully","post":serializer.data},status=status.HTTP_200_OK)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

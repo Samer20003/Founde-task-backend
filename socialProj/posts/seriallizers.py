@@ -12,3 +12,7 @@ class CreatePostSerializer(serializers.ModelSerializer):
         model = Post
         fields = ["body", "img_url", "user",'pup_date']
 
+class UpdatePostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = ["body", "img_url","id"]
