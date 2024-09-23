@@ -6,10 +6,11 @@ from django.views import generic
 from .models import Post
 from django.shortcuts import render ,redirect , get_object_or_404
 from .form import PostForm
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view ,permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
-from .seriallizers import PostSerializer
+from .seriallizers import PostSerializer, CreatePostSerializer
 from rest_framework import generics
 # Create your views here.
 class PostDetailView(generic.DetailView):
@@ -65,3 +66,25 @@ def post_list_view(request):
     posts = Post.objects.all()
     serializer = PostSerializer(posts, many=True) # the use of {many= True}: to serilaze a query set of objects which is a list of posts
     return Response(serializer.data)
+
+@api_view (['DELETE'])
+def post_delete(request, pk):
+    try:
+        post_obj= Post.objects.get(pk=pk)
+        post_obj.delete()
+        return Response({'msg': 'Post deleted successfully'}, status = status.HTTP_204_NO_CONTENT)
+    except Post.DoesNotExist:
+        return Response({'msg': 'Post not found'}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['POST'])
+def add_post(request):
+    item = CreatePostSerializer(data=request.data)
+    if item.is_valid():
+        item.save()
+        return Response(item.data, status=status.HTTP_201_CREATED)
+    else:
+        print(item.errors)
+        return Response(item.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
